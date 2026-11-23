@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Customer Economics · interactive preview</title><style>
+:root{--a:#0d9488;--ink:#0f172a;--mut:#64748b;--bg:#f8fafc;--card:#fff;--line:#e2e8f0;--ok:#16a34a;--warn:#d97706;--bad:#dc2626}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg)}
+header{background:linear-gradient(135deg,#0f172a,#1e293b);color:#fff;padding:28px 24px}
+header .in,main,footer{max-width:980px;margin:0 auto}
+header small{color:var(--a);letter-spacing:.12em;text-transform:uppercase;font-weight:700;font-size:12px;filter:brightness(1.6)}
+header h1{margin:6px 0 4px;font-size:26px}header p{margin:0;color:#cbd5e1}
+main{padding:20px 24px 8px}.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:0 0 16px}
+.card h2{margin:0 0 8px;font-size:16px}.note{color:var(--mut);font-size:13px}.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:99px;background:#eef2ff;color:#3730a3;font-weight:600}
+.row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}.row>*{flex:1 1 180px}label{font-size:12px;color:var(--mut);display:block;margin-bottom:2px}
+input[type=number],input[type=text],select,textarea{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff}
+input[type=range]{width:100%;accent-color:var(--a)}textarea{min-height:120px;font-family:ui-monospace,Menlo,monospace;font-size:13px}
+table{border-collapse:collapse;width:100%;font-size:13.5px}th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--mut);font-weight:600;font-size:12px}
+.badge{display:inline-block;padding:2px 9px;border-radius:99px;font-weight:700;font-size:12px;color:#fff}
+.b-ok{background:var(--ok)}.b-warn{background:var(--warn)}.b-bad{background:var(--bad)}.b-mut{background:#64748b}.b-a{background:var(--a)}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.kpi div{background:#f1f5f9;border-radius:10px;padding:10px 12px}
+.kpi b{display:block;font-size:22px}.kpi span{font-size:12px;color:var(--mut)}.bar{height:10px;border-radius:6px;background:var(--a);min-width:2px}
+.mono{font-family:ui-monospace,Menlo,monospace}.hl{background:#fde68a;border-radius:3px;padding:0 2px}.hv{background:#fecaca;border-radius:3px;padding:0 2px}
+footer{padding:14px 24px 30px;color:var(--mut);font-size:12px}.synth{background:#fef9c3;border:1px solid #fde047;color:#713f12;border-radius:8px;padding:6px 10px;font-size:12px;margin:0 0 14px}
+</style></head><body>
+<header><div class="in"><small>Customer economics · Sprint Growth Suite</small><h1>Customer Economics</h1><p>Pay less for each customer, or have each customer leave more.</p></div></header>
+<main><div class="synth">Interactive illustration with synthetic, made-up numbers. No real client or real data.</div>
+
+<div class="card"><h2>Pay less per customer, or keep each customer longer</h2>
+<div class="row"><div><label>Average ticket <b id="a1"></b></label><input id="tk" type="range" min="10000" max="200000" step="1000" value="58000"></div>
+<div><label>Purchases per customer <b id="a2"></b></label><input id="pc" type="range" min="1" max="6" step="0.1" value="2.2"></div>
+<div><label>Contribution margin <b id="a3"></b></label><input id="mg" type="range" min="10" max="80" step="1" value="55"></div>
+<div><label>nCAC (new-customer CAC) <b id="a4"></b></label><input id="cc" type="range" min="5000" max="120000" step="500" value="29675"></div></div></div>
+<div class="card"><div class="kpi"><div><b id="clv"></b><span>CLV (contribution)</span></div><div><b id="ltv"></b><span>LTV : CAC (healthy: 3.0x or more)</span></div><div><b id="mx"></b><span>maximum CAC (CLV / 3)</span></div><div><b id="pb"></b><span>purchases to recover CAC</span></div></div><p id="msg"></p></div>
+<div class="card"><h2>Sensitivity: which hand to move first</h2><table id="sens"></table><p class="note">Find the cell that crosses 3.0x with the least real effort.</p></div>
+
+</main><footer>© Alan Melnick · alanmelnick.com. All rights reserved. Created and modified by Alan Melnick; distribution, resale, sharing or republishing, in whole or in part, without his written authorization is prohibited.</footer>
+<script>
+const $=id=>document.getElementById(id);const m=x=>'$'+Math.round(x).toLocaleString('es-CL');
+function run(){const t=+$('tk').value,p=+$('pc').value,g=+$('mg').value/100,c=+$('cc').value;$('a1').textContent=m(t);$('a2').textContent=p.toFixed(1);$('a3').textContent=Math.round(g*100)+'%';$('a4').textContent=m(c);
+const clv=t*g*p,r=clv/c;$('clv').textContent=m(clv);$('ltv').textContent=r.toFixed(1)+'x';$('mx').textContent=m(clv/3);$('pb').textContent=(c/(t*g)).toFixed(1);
+$('msg').innerHTML=r>=3?'<span class="badge b-ok">Healthy</span> The economics support more budget.':'<span class="badge b-bad">Below 3.0x</span> This business does not need more budget. It needs one of the two hands.';
+let h='<tr><th>nCAC</th>';[0,0.3,0.6].forEach(d=>h+=`<th>+${d.toFixed(1)} purchases</th>`);h+='</tr>';
+[0,-0.1,-0.2].forEach(dc=>{h+=`<tr><td>${dc==0?'Current':(dc*100)+'%'}</td>`;[0,0.3,0.6].forEach(dp=>{const v=t*g*(p+dp)/(c*(1+dc));h+=`<td><span class="badge ${v>=3?'b-ok':v>=2?'b-warn':'b-bad'}">${v.toFixed(2)}x</span></td>`});h+='</tr>'});$('sens').innerHTML=h}
+['tk','pc','mg','cc'].forEach(i=>$(i).addEventListener('input',run));run();
+</script></body></html>

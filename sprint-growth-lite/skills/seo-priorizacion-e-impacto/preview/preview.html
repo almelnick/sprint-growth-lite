@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SEO Prioritization and Impact · interactive preview</title><style>
+:root{--a:#d97706;--ink:#0f172a;--mut:#64748b;--bg:#f8fafc;--card:#fff;--line:#e2e8f0;--ok:#16a34a;--warn:#d97706;--bad:#dc2626}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg)}
+header{background:linear-gradient(135deg,#0f172a,#1e293b);color:#fff;padding:28px 24px}
+header .in,main,footer{max-width:980px;margin:0 auto}
+header small{color:var(--a);letter-spacing:.12em;text-transform:uppercase;font-weight:700;font-size:12px;filter:brightness(1.6)}
+header h1{margin:6px 0 4px;font-size:26px}header p{margin:0;color:#cbd5e1}
+main{padding:20px 24px 8px}.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:0 0 16px}
+.card h2{margin:0 0 8px;font-size:16px}.note{color:var(--mut);font-size:13px}.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:99px;background:#eef2ff;color:#3730a3;font-weight:600}
+.row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}.row>*{flex:1 1 180px}label{font-size:12px;color:var(--mut);display:block;margin-bottom:2px}
+input[type=number],input[type=text],select,textarea{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff}
+input[type=range]{width:100%;accent-color:var(--a)}textarea{min-height:120px;font-family:ui-monospace,Menlo,monospace;font-size:13px}
+table{border-collapse:collapse;width:100%;font-size:13.5px}th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--mut);font-weight:600;font-size:12px}
+.badge{display:inline-block;padding:2px 9px;border-radius:99px;font-weight:700;font-size:12px;color:#fff}
+.b-ok{background:var(--ok)}.b-warn{background:var(--warn)}.b-bad{background:var(--bad)}.b-mut{background:#64748b}.b-a{background:var(--a)}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.kpi div{background:#f1f5f9;border-radius:10px;padding:10px 12px}
+.kpi b{display:block;font-size:22px}.kpi span{font-size:12px;color:var(--mut)}.bar{height:10px;border-radius:6px;background:var(--a);min-width:2px}
+.mono{font-family:ui-monospace,Menlo,monospace}.hl{background:#fde68a;border-radius:3px;padding:0 2px}.hv{background:#fecaca;border-radius:3px;padding:0 2px}
+footer{padding:14px 24px 30px;color:var(--mut);font-size:12px}.synth{background:#fef9c3;border:1px solid #fde047;color:#713f12;border-radius:8px;padding:6px 10px;font-size:12px;margin:0 0 14px}
+</style></head><body>
+<header><div class="in"><small>SEO and GEO · Sprint Growth Suite</small><h1>SEO Prioritization and Impact</h1><p>A work order with honest ranges, never a promised ranking.</p></div></header>
+<main><div class="synth">Interactive illustration with synthetic, made-up numbers. No real client or real data.</div>
+
+<div class="card"><h2>Impact x confidence / effort</h2>
+<p class="note">Score is a work order, not a prediction. Effect is always a range with its assumption visible. Edit confidence to see the order change.</p>
+<table id="t"></table></div>
+<div class="card"><div class="kpi"><div><b id="lo"></b><span>extra clicks per month, low</span></div><div><b id="hi"></b><span>extra clicks per month, high</span></div></div><p class="note">Assumption: the percentage improvement is declared by whoever fills the plan and is confirmed in Search Console on a window fixed beforehand. No ranking is promised from any tactic.</p></div>
+
+</main><footer>© Alan Melnick · alanmelnick.com. All rights reserved. Created and modified by Alan Melnick; distribution, resale, sharing or republishing, in whole or in part, without his written authorization is prohibited.</footer>
+<script>
+const $=id=>document.getElementById(id);
+const A=[['Fix duplicate canonicals on categories',4,0.7,2,3200,5,15],['Rewrite titles on the 20 pages with most impressions',3,0.6,3,5400,3,10],['Create service page for a high-value query',5,0.5,8,0,null,null],['Add product structured data',2,0.8,1,1800,0,5],['Merge two pages with the same intent',3,0.7,2,2100,4,12]];
+function run(){const R=A.map((a,i)=>({a,i,c:+(document.getElementById('c'+i)?document.getElementById('c'+i).value:a[2])}));R.sort((x,y)=>y.a[1]*y.c/y.a[3]-x.a[1]*x.c/x.a[3]);
+let lo=0,hi=0;$('t').innerHTML='<tr><th>#</th><th>Action</th><th>Impact (1-5)</th><th>Confidence</th><th>Effort (days)</th><th>Score</th><th>Clicks per month (range)</th></tr>'+R.map((r,k)=>{const a=r.a,s=a[1]*r.c/a[3];let rg='not estimated';if(a[5]!=null){const l=Math.round(a[4]*a[5]/100),h=Math.round(a[4]*a[6]/100);rg=l+' to '+h;lo+=l;hi+=h}
+return`<tr><td>${k+1}</td><td>${a[0]}</td><td>${a[1]}</td><td><input id="c${r.i}" type="number" step="0.1" min="0.1" max="1" value="${r.c}" style="width:70px"></td><td>${a[3]}</td><td><b>${s.toFixed(2)}</b></td><td>${rg}</td></tr>`}).join('');
+$('lo').textContent=lo.toLocaleString('es-CL');$('hi').textContent=hi.toLocaleString('es-CL');document.querySelectorAll('#t input').forEach(x=>x.addEventListener('change',run))}
+run();
+</script></body></html>

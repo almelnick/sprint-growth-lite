@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Anti-Slop Gate · interactive preview</title><style>
+:root{--a:#e11d48;--ink:#0f172a;--mut:#64748b;--bg:#f8fafc;--card:#fff;--line:#e2e8f0;--ok:#16a34a;--warn:#d97706;--bad:#dc2626}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg)}
+header{background:linear-gradient(135deg,#0f172a,#1e293b);color:#fff;padding:28px 24px}
+header .in,main,footer{max-width:980px;margin:0 auto}
+header small{color:var(--a);letter-spacing:.12em;text-transform:uppercase;font-weight:700;font-size:12px;filter:brightness(1.6)}
+header h1{margin:6px 0 4px;font-size:26px}header p{margin:0;color:#cbd5e1}
+main{padding:20px 24px 8px}.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:0 0 16px}
+.card h2{margin:0 0 8px;font-size:16px}.note{color:var(--mut);font-size:13px}.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:99px;background:#eef2ff;color:#3730a3;font-weight:600}
+.row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}.row>*{flex:1 1 180px}label{font-size:12px;color:var(--mut);display:block;margin-bottom:2px}
+input[type=number],input[type=text],select,textarea{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff}
+input[type=range]{width:100%;accent-color:var(--a)}textarea{min-height:120px;font-family:ui-monospace,Menlo,monospace;font-size:13px}
+table{border-collapse:collapse;width:100%;font-size:13.5px}th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--mut);font-weight:600;font-size:12px}
+.badge{display:inline-block;padding:2px 9px;border-radius:99px;font-weight:700;font-size:12px;color:#fff}
+.b-ok{background:var(--ok)}.b-warn{background:var(--warn)}.b-bad{background:var(--bad)}.b-mut{background:#64748b}.b-a{background:var(--a)}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.kpi div{background:#f1f5f9;border-radius:10px;padding:10px 12px}
+.kpi b{display:block;font-size:22px}.kpi span{font-size:12px;color:var(--mut)}.bar{height:10px;border-radius:6px;background:var(--a);min-width:2px}
+.mono{font-family:ui-monospace,Menlo,monospace}.hl{background:#fde68a;border-radius:3px;padding:0 2px}.hv{background:#fecaca;border-radius:3px;padding:0 2px}
+footer{padding:14px 24px 30px;color:var(--mut);font-size:12px}.synth{background:#fef9c3;border:1px solid #fde047;color:#713f12;border-radius:8px;padding:6px 10px;font-size:12px;margin:0 0 14px}
+</style></head><body>
+<header><div class="in"><small>Social media · Sprint Growth Suite</small><h1>Anti-Slop Gate</h1><p>Generic copy is invisible. Find it, and replace it with something provable.</p></div></header>
+<main><div class="synth">Interactive illustration with synthetic, made-up numbers. No real client or real data.</div>
+
+<div class="card"><h2>Live anti-slop linter</h2>
+<p class="note">Paste or edit copy. Findings are signals, not verdicts: a person decides what to change. Voseo is always high severity and never allowed.</p>
+<textarea id="tx" style="min-height:150px">Hoy en día todos quieren llevar su hogar al siguiente nivel. Descubre el poder de los colores cálidos y sumérgete en una nueva forma de decorar. Mira lo que puedes lograr con nuestra colección.
+
+Síguenos para más ideas. #deco #hogar #casa #diseño #living #interior</textarea>
+<div id="hl" class="mono" style="white-space:pre-wrap;margin-top:10px;font-size:13px"></div></div>
+<div class="card"><h2>Findings</h2><table id="f"></table></div>
+
+</main><footer>© Alan Melnick · alanmelnick.com. All rights reserved. Created and modified by Alan Melnick; distribution, resale, sharing or republishing, in whole or in part, without his written authorization is prohibited.</footer>
+<script>
+const $=id=>document.getElementById(id);
+const CL=[/en el (acelerado |cambiante )?mundo (de hoy|actual)/gi,/hoy en d[ií]a/gi,/sum[eé]rgete/gi,/desbloquea/gi,/revoluciona/gi,/lleva (tu|su) \w+ al siguiente nivel/gi,/cambia las reglas del juego/gi,/descubre el poder de/gi,/te presentamos/gi,/imperdible/gi,/in today'?s (fast-paced )?world/gi,/unlock (the )?(power|potential)/gi,/game[- ]changer/gi,/elevate your/gi,/dive into/gi];
+const VO=[/\bvos\b/gi,/\b(tenés|querés|podés|sabés|venís|decís|hacés|andás|pensás|mirás|vivís)\b/gi,/\b(mirá|escuchá|andá|pensá|decime|dejá|vení|tené|hacé|fijate|suscribite|seguinos|comprá|probá|empezá)\b/gi];
+const CTA=[/s[ií]guenos para m[aá]s/gi,/d[ií]nos en los comentarios/gi,/link in bio/gi,/d[eé]janos tu opini[oó]n/gi];
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function run(){const t=$('tx').value,F=[];const find=(ps,ty,sev)=>ps.forEach(r=>{r.lastIndex=0;let m;while((m=r.exec(t)))F.push({ty,tx:m[0],pos:m.index,len:m[0].length,sev})});
+find(CL,'cliché','medium');find(VO,'voseo','HIGH');find(CTA,'generic CTA','low');
+const w=Math.max(1,t.split(/\s+/).filter(Boolean).length),d=(t.match(/—/g)||[]).length,h=(t.match(/#\w+/g)||[]).length,e=(t.match(/[\u{1F300}-\u{1FAFF}]/gu)||[]).length,x=(t.match(/!/g)||[]).length;
+if(d>=3&&d/w>0.02)F.push({ty:'too many long dashes',tx:d+' in '+w+' words',pos:0,sev:'low'});if(h>5)F.push({ty:'too many hashtags',tx:h+' hashtags',pos:0,sev:'low'});if(e>6)F.push({ty:'too many emojis',tx:e+' emojis',pos:0,sev:'low'});if(x>4)F.push({ty:'too many exclamations',tx:x+' marks',pos:0,sev:'low'});
+const spans=F.filter(f=>f.len).sort((a,b)=>a.pos-b.pos);let out='',i=0;spans.forEach(s=>{if(s.pos<i)return;out+=esc(t.slice(i,s.pos))+`<span class="${s.sev==='HIGH'?'hv':'hl'}">${esc(t.substr(s.pos,s.len))}</span>`;i=s.pos+s.len});out+=esc(t.slice(i));$('hl').innerHTML=out;
+$('f').innerHTML='<tr><th>Type</th><th>Text</th><th>Severity</th></tr>'+(F.length?F.sort((a,b)=>a.pos-b.pos).map(f=>`<tr><td>${f.ty}</td><td>${esc(f.tx)}</td><td><span class="badge ${f.sev==='HIGH'?'b-bad':f.sev==='medium'?'b-warn':'b-mut'}">${f.sev}</span></td></tr>`).join(''):'<tr><td colspan=3>No findings. A person must still read it.</td></tr>')}
+$('tx').addEventListener('input',run);run();
+</script></body></html>

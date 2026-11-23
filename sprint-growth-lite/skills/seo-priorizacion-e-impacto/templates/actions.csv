@@ -1,0 +1,5 @@
+accion,impacto,confianza,esfuerzo_dias,clics_mes_actuales,mejora_pct_min,mejora_pct_max,valor_por_clic
+Corregir canonicals duplicados en categorías,4,0.7,2,3200,5,15,420
+Reescribir títulos de las 20 páginas con más impresiones,3,0.6,3,5400,3,10,420
+Crear página de servicio para consulta de alto valor,5,0.5,8,0,,,
+Agregar JSON-LD de producto,2,0.8,1,1800,0,5,420

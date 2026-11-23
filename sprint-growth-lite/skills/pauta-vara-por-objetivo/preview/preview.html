@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Yardstick by Objective · interactive preview</title><style>
+:root{--a:#4f46e5;--ink:#0f172a;--mut:#64748b;--bg:#f8fafc;--card:#fff;--line:#e2e8f0;--ok:#16a34a;--warn:#d97706;--bad:#dc2626}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg)}
+header{background:linear-gradient(135deg,#0f172a,#1e293b);color:#fff;padding:28px 24px}
+header .in,main,footer{max-width:980px;margin:0 auto}
+header small{color:var(--a);letter-spacing:.12em;text-transform:uppercase;font-weight:700;font-size:12px;filter:brightness(1.6)}
+header h1{margin:6px 0 4px;font-size:26px}header p{margin:0;color:#cbd5e1}
+main{padding:20px 24px 8px}.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:0 0 16px}
+.card h2{margin:0 0 8px;font-size:16px}.note{color:var(--mut);font-size:13px}.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:99px;background:#eef2ff;color:#3730a3;font-weight:600}
+.row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}.row>*{flex:1 1 180px}label{font-size:12px;color:var(--mut);display:block;margin-bottom:2px}
+input[type=number],input[type=text],select,textarea{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff}
+input[type=range]{width:100%;accent-color:var(--a)}textarea{min-height:120px;font-family:ui-monospace,Menlo,monospace;font-size:13px}
+table{border-collapse:collapse;width:100%;font-size:13.5px}th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--mut);font-weight:600;font-size:12px}
+.badge{display:inline-block;padding:2px 9px;border-radius:99px;font-weight:700;font-size:12px;color:#fff}
+.b-ok{background:var(--ok)}.b-warn{background:var(--warn)}.b-bad{background:var(--bad)}.b-mut{background:#64748b}.b-a{background:var(--a)}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.kpi div{background:#f1f5f9;border-radius:10px;padding:10px 12px}
+.kpi b{display:block;font-size:22px}.kpi span{font-size:12px;color:var(--mut)}.bar{height:10px;border-radius:6px;background:var(--a);min-width:2px}
+.mono{font-family:ui-monospace,Menlo,monospace}.hl{background:#fde68a;border-radius:3px;padding:0 2px}.hv{background:#fecaca;border-radius:3px;padding:0 2px}
+footer{padding:14px 24px 30px;color:var(--mut);font-size:12px}.synth{background:#fef9c3;border:1px solid #fde047;color:#713f12;border-radius:8px;padding:6px 10px;font-size:12px;margin:0 0 14px}
+</style></head><body>
+<header><div class="in"><small>Paid media · Sprint Growth Suite</small><h1>Yardstick by Objective</h1><p>Before any metric, decide which number judges this campaign.</p></div></header>
+<main><div class="synth">Interactive illustration with synthetic, made-up numbers. No real client or real data.</div>
+
+<div class="card"><h2>Which number decides this campaign?</h2>
+<p class="note">Pick an objective. One yardstick decides the verdict; the diagnosis explains why it moved; the vanity metric is what not to use.</p>
+<select id="o"></select><div id="out" style="margin-top:12px"></div></div>
+<div class="card"><h2>Video reading: hook rate and hold rate</h2>
+<div class="row"><div><label>Impressions</label><input id="i" type="number" value="100000"></div><div><label>3-second plays</label><input id="p3" type="number" value="28000"></div><div><label>ThruPlays</label><input id="tp" type="number" value="9000"></div></div>
+<div class="kpi" style="margin-top:10px"><div><b id="hook"></b><span>hook rate = 3s plays / impressions</span></div><div><b id="hold"></b><span>hold rate = ThruPlays / 3s plays</span></div></div><p id="read" class="note"></p></div>
+
+</main><footer>© Alan Melnick · alanmelnick.com. All rights reserved. Created and modified by Alan Melnick; distribution, resale, sharing or republishing, in whole or in part, without his written authorization is prohibited.</footer>
+<script>
+const T=[["Awareness","Reach / ThruPlay","Cost per person reached","Frequency, CPM, reach","Absolute impressions, likes"],["Traffic","Landing page views","Cost per landing page view","Clicks, LPV / clicks, outbound CTR","Isolated clicks"],
+["Engagement (post)","Post engagement","Cost per interaction","Engagement rate","Total reactions"],["Engagement (video)","ThruPlay","Cost per ThruPlay","Hook rate, hold rate, retention","Started plays"],
+["Engagement (messages)","Conversations","Cost per conversation started","CTR, blocks","Impressions"],["Leads (form)","Leads","CPL","Completed form rate","Clicks"],
+["Leads (CRM)","Conversion leads","Cost per qualified lead","Gross CPL, close rate","Gross CPL alone"],["App","Installs / events","CPI / cost per event","Install to event","Installs without retention"],
+["Sales","Conversions / value","ROAS and CPA","AOV, CVR, MER, new-customer ROAS","Pixel ROAS without context"]];
+const $=id=>document.getElementById(id);$('o').innerHTML=T.map((r,i)=>`<option value="${i}">${r[0]}</option>`).join('');
+function show(){const r=T[$('o').value];$('out').innerHTML=`<div class="kpi"><div><span>Optimization goal</span><b style="font-size:16px">${r[1]}</b></div><div><span>Yardstick (decides)</span><b style="font-size:16px;color:#16a34a">${r[2]}</b></div><div><span>Diagnosis (explains)</span><b style="font-size:16px">${r[3]}</b></div><div><span>Vanity (do not use)</span><b style="font-size:16px;color:#dc2626">${r[4]}</b></div></div>`}
+function vid(){const i=+$('i').value,a=+$('p3').value,b=+$('tp').value,h=a/i,k=b/a;$('hook').textContent=(h*100).toFixed(1)+'%';$('hold').textContent=(k*100).toFixed(1)+'%';
+$('read').textContent=(h>=0.25&&k>=0.3)?'Both healthy: scale the angle.':(h>=0.25)?'High hook, low hold: rebuild the body of the video.':(k>=0.3)?'Low hook, high hold: fix the first 3 seconds.':'Both low: change the angle, not the edit.'}
+$('o').addEventListener('change',show);['i','p3','tp'].forEach(x=>$(x).addEventListener('input',vid));show();vid();
+</script></body></html>
